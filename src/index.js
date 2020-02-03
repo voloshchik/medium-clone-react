@@ -1,6 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import App from "./App";
+import { BrowserRouter as Router} from "react-router-dom";
+import Routes from "./routes";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+function App() {
+  return (
+    <div>
+      <h1>Hellow hook</h1>
+    </div>
+  );
+}
+
+ReactDOM.render(
+  <Router>
+    <Routes>
+      <App />
+    </Routes>
+  </Router>,
+  document.getElementById("root")
+);
