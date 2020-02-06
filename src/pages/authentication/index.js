@@ -4,6 +4,7 @@ import { Link, Redirect } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { CurrentUserContext } from "../../contexts/currentUser";
+import BackendErrorMessages from "../../components/backendErrorMessage/backendErrorMessage";
 
 const Authentication = props => {
   const isLogin = props.match.path === "/login";
@@ -14,14 +15,14 @@ const Authentication = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const apiUrl = isLogin ? "/users/login" : "/users";
-  const [{ isLoading, response }, doFetch] = useFetch(apiUrl);
+  const [{ isLoading, response, error }, doFetch] = useFetch(apiUrl);
   const [isSuccessfulSubmit, setIsSuccessSubmit] = useState(false);
   const [token, setToken] = useLocalStorage("token");
   const [currentUserState, setCurrentUserState] = useContext(
     CurrentUserContext
   );
-  console.log("token", token);
-  console.log('currentUserState',currentUserState)
+
+  console.log("error", error);
   const hundleSubmit = e => {
     e.preventDefault();
 
@@ -40,14 +41,15 @@ const Authentication = props => {
     }
     localStorage.setItem("token", response.user.token);
     setIsSuccessSubmit(true);
-    setCurrentUserState((state)=>{
-    return {...state,
-      isLoading: true,
-      isLoggedIn: false,
-      currentUser: response.user
-    }
-    })
-  }, [response, setToken,setCurrentUserState]);
+    setCurrentUserState(state => {
+      return {
+        ...state,
+        isLoading: true,
+        isLoggedIn: false,
+        currentUser: response.user
+      };
+    });
+  }, [response, setToken, setCurrentUserState]);
   if (isSuccessfulSubmit) {
     return <Redirect to="/" />;
   }
@@ -61,6 +63,7 @@ const Authentication = props => {
               <Link to={descriptionLink}>{descriptionText}</Link>
             </p>
             <form onSubmit={hundleSubmit}>
+              {error && <BackendErrorMessages backendErrors={error.errors} />}
               <fieldset>
                 {!isLogin && (
                   <fieldset className="form-group">
