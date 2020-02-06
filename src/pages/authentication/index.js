@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, Redirect } from "react-router-dom";
 
-import useFetch from "../../useFetch/useFetch";
+import useFetch from "../../hooks/useFetch";
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 const Authentication = props => {
   const isLogin = props.match.path === "/login";
@@ -12,14 +13,15 @@ const Authentication = props => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const apiUrl = isLogin ? "/users/login" : "/users";
-  const [{ isLoading, response, error }, doFetch] = useFetch(apiUrl);
-
-  console.log(isLogin);
+  const [{ isLoading, response }, doFetch] = useFetch(apiUrl);
+  const [isSuccessfulSubmit, setIsSuccessSubmit] = useState(false);
+  const [token,setToken]=useLocalStorage('token')
+  console.log('token',token);
   const hundleSubmit = e => {
     e.preventDefault();
-   
+
     const user = isLogin ? { email, password } : { email, password, username };
-    console.log(user)
+    console.log(user);
     doFetch({
       method: "post",
       data: {
@@ -27,7 +29,16 @@ const Authentication = props => {
       }
     });
   };
-
+  useEffect(() => {
+    if (!response) {
+      return;
+    }
+    localStorage.setItem("token", response.user.token);
+    setIsSuccessSubmit(true);
+  }, [response,setToken]);
+  if (isSuccessfulSubmit) {
+    return <Redirect to="/" />;
+  }
   return (
     <div className="auth-page">
       <div className="container page">
@@ -86,3 +97,11 @@ const Authentication = props => {
 };
 
 export default Authentication;
+// id: 83335
+// email: "lovkiy2012@gmail.com"
+// createdAt: "2020-02-05T18:32:53.776Z"
+// updatedAt: "2020-02-05T18:32:53.782Z"
+// username: "test7806895"
+// bio: null
+// image: null
+// token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ODMzMzUsInVzZXJuYW1lIjoidGVzdDc4MDY4OTUiLCJleHAiOjE1ODYxMTE1NzN9.CMM9VXtrLEe42Uu8ClAMdzYARX9-4WLazI1bk7ajpOo"
