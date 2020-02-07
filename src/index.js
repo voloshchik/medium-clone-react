@@ -5,15 +5,18 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "./routes";
 import TopBar from "./components/topBar";
 import { CurrentUserProvider } from "./contexts/currentUser";
+import CurrentUserChekcer from './components/currentUserChekcer';
 
 function App() {
   return (
     <CurrentUserProvider>
-      <Router>
-        <h1>Welcom to hook</h1>
-        <TopBar />
-        <Routes />
-      </Router>
+      <CurrentUserChekcer>
+        <Router>
+          <h1>Welcom to hook</h1>
+          <TopBar />
+          <Routes />
+        </Router>
+      </CurrentUserChekcer>
     </CurrentUserProvider>
   );
 }

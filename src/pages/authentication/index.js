@@ -17,17 +17,17 @@ const Authentication = props => {
   const apiUrl = isLogin ? "/users/login" : "/users";
   const [{ isLoading, response, error }, doFetch] = useFetch(apiUrl);
   const [isSuccessfulSubmit, setIsSuccessSubmit] = useState(false);
-  const [token, setToken] = useLocalStorage("token");
+  const [, setToken] = useLocalStorage("token");
   const [currentUserState, setCurrentUserState] = useContext(
     CurrentUserContext
   );
 
-  console.log("error", error);
+  console.log("currentUserState", currentUserState);
   const hundleSubmit = e => {
     e.preventDefault();
 
     const user = isLogin ? { email, password } : { email, password, username };
-    console.log(user);
+   
     doFetch({
       method: "post",
       data: {
