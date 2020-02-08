@@ -22,7 +22,7 @@ const Authentication = props => {
     CurrentUserContext
   );
 
-  console.log("currentUserState", currentUserState);
+  console.log("error", error);
   const hundleSubmit = e => {
     e.preventDefault();
 
