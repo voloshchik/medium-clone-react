@@ -9,17 +9,16 @@ const CurrentUserChekcer = ({ children }) => {
   const [{ response }, doFetch] = useFetch("/user");
 
   useEffect(() => {
-    debugger;
     if (!token) {
       setCurrentUserState(state => ({ ...state, isLoggedIn: false }));
-      return
+      return;
     }
 
     doFetch();
     setCurrentUserState(state => {
       return { ...state, isLoading: true };
     });
-  }, [setCurrentUserState, token, doFetch]);
+  }, [token, setCurrentUserState, doFetch]);
   useEffect(() => {
     if (!response) {
       return;

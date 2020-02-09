@@ -36,6 +36,7 @@ const Authentication = props => {
     });
   };
   useEffect(() => {
+    
     if (!response) {
       return;
     }
@@ -49,7 +50,7 @@ const Authentication = props => {
         currentUser: response.user
       };
     });
-  }, [response, setToken, setCurrentUserState]);
+  }, [response,setToken,setCurrentUserState]);
   if (isSuccessfulSubmit) {
     return <Redirect to="/" />;
   }
