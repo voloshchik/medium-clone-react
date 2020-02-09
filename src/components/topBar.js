@@ -3,9 +3,10 @@ import { NavLink } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/currentUser";
 
 const TopBar = () => {
-  const [currentUserState, setCurrentUserState] = useContext(
+  const [currentUserState] = useContext(
     CurrentUserContext
   );
+  console.log('currentUserStateBar',currentUserState)
   return (
     <nav className="navbar navbar-light">
       <div className="container">

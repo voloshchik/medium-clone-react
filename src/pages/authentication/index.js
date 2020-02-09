@@ -18,11 +18,11 @@ const Authentication = props => {
   const [{ isLoading, response, error }, doFetch] = useFetch(apiUrl);
   const [isSuccessfulSubmit, setIsSuccessSubmit] = useState(false);
   const [, setToken] = useLocalStorage("token");
-  const [currentUserState, setCurrentUserState] = useContext(
+  const [, setCurrentUserState] = useContext(
     CurrentUserContext
   );
 
-  console.log("error", error);
+  
   const hundleSubmit = e => {
     e.preventDefault();
 
@@ -39,7 +39,7 @@ const Authentication = props => {
     if (!response) {
       return;
     }
-    localStorage.setItem("token", response.user.token);
+    setToken(response.user.token);
     setIsSuccessSubmit(true);
     setCurrentUserState(state => {
       return {

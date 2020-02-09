@@ -1,26 +1,25 @@
-import  { useEffect, useContext } from "react";
+import { useEffect, useContext } from "react";
 import useFetch from "../hooks/useFetch";
 import { CurrentUserContext } from "../contexts/currentUser";
-import useLocalStorage from '../hooks/useLocalStorage';
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const CurrentUserChekcer = ({ children }) => {
-  const [, setCurrentUserState] = useContext(
-    CurrentUserContext
-  );
+  const [, setCurrentUserState] = useContext(CurrentUserContext);
   const [token] = useLocalStorage("token");
   const [{ response }, doFetch] = useFetch("/user");
-  console.log("response", response);
+
   useEffect(() => {
-    if (token) {
-      setCurrentUserState(state => {
-        return { ...state, isLoggedIn: false };
-      });
+    debugger;
+    if (!token) {
+      setCurrentUserState(state => ({ ...state, isLoggedIn: false }));
+      return
     }
+
     doFetch();
     setCurrentUserState(state => {
       return { ...state, isLoading: true };
     });
-  }, [setCurrentUserState,token,doFetch]);
+  }, [setCurrentUserState, token, doFetch]);
   useEffect(() => {
     if (!response) {
       return;
@@ -33,7 +32,7 @@ const CurrentUserChekcer = ({ children }) => {
         currentUser: response.user
       };
     });
-  }, [response,setCurrentUserState]);
+  }, [response, setCurrentUserState]);
 
   return children;
 };
