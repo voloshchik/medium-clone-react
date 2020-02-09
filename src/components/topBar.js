@@ -15,7 +15,7 @@ const TopBar = () => {
         <ul className="nav navbar-nav pull-xs-right">
           <li className="nav-item">
             <NavLink to="/" className="nav-link" exact>
-              Home
+              Home1
             </NavLink>
           </li>
           {currentUserState.isLoggedIn === false && (
