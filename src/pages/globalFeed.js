@@ -19,8 +19,12 @@ const GlobalFeed = () => {
       </div>
       <div className="container page">
         <div className="row">
-          <div className="col-md-9"></div>
-          <div className="col-md-3"></div>
+          <div className="col-md-9">
+            {isLoading && <div>Loading...</div>}
+            {error && <div>Some error happened</div>}
+            {!isLoading && response && <Feed articles={response.articles} />}
+          </div>
+          <div className="col-md-3">Popular tags</div>
         </div>
       </div>
     </div>
