@@ -3,10 +3,11 @@ import { NavLink } from "react-router-dom";
 import { CurrentUserContext } from "../contexts/currentUser";
 
 const TopBar = () => {
-  const [currentUserState] = useContext(
-    CurrentUserContext
-  );
-  console.log('currentUserStateBar',currentUserState)
+  const [currentUserState] = useContext(CurrentUserContext);
+  const userImage =
+    (currentUserState.isLoggedIn && currentUserState.currentUser.image) ||
+    "https://static.productionready.io/images/smiley-cyrus.jpg";
+  console.log("currentUserStateBar", currentUserState);
   return (
     <nav className="navbar navbar-light">
       <div className="container">
@@ -36,22 +37,23 @@ const TopBar = () => {
           {currentUserState.isLoggedIn && (
             <>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/article/new">
+                <NavLink to="/articles/new" className="nav-link">
                   <i className="ion-compose" />
                   &nbsp; New Post
-                  
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/settings" className="nav-link">
+                  <i className="ion-gear-a" />
+                  &nbsp; Settings
                 </NavLink>
               </li>
               <li className="nav-item">
                 <NavLink
-                  className="nav-link"
                   to={`/profiles/${currentUserState.currentUser.username}`}
+                  className="nav-link"
                 >
-                  <img
-                    className="user-pic"
-                    src={currentUserState.currentUser.image}
-                    alt=""
-                  />
+                  <img className="user-pic" src={userImage} alt="" />
                   &nbsp; {currentUserState.currentUser.username}
                 </NavLink>
               </li>

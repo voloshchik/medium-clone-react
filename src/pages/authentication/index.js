@@ -7,53 +7,53 @@ import { CurrentUserContext } from "../../contexts/currentUser";
 import BackendErrorMessages from "../../components/backendErrorMessage/backendErrorMessage";
 
 const Authentication = props => {
-  const isLogin = props.match.path === "/login";
-  const pageTitle = isLogin ? "Sign in" : "Sign up";
-  const descriptionLink = isLogin ? "/register" : "/login";
-  const descriptionText = isLogin ? "Need an account?" : "Have an account?";
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const apiUrl = isLogin ? "/users/login" : "/users";
-  const [{ isLoading, response, error }, doFetch] = useFetch(apiUrl);
-  const [isSuccessfulSubmit, setIsSuccessSubmit] = useState(false);
-  const [, setToken] = useLocalStorage("token");
-  const [, setCurrentUserState] = useContext(
-    CurrentUserContext
-  );
+  const isLogin = props.match.path === '/login'
+  const pageTitle = isLogin ? 'Sign In' : 'Sign Up'
+  const descriptionLink = isLogin ? '/register' : '/login'
+  const descriptionText = isLogin ? 'Need an account?' : 'Have an account?'
+  const apiUrl = isLogin ? '/users/login' : '/users'
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const [isSuccessfullSubmit, setIsSuccessfullSubmit] = useState(false)
+  const [{isLoading, response, error}, doFetch] = useFetch(apiUrl)
+  const [, setToken] = useLocalStorage('token')
+  const [currentUserState, setCurrentUserState] = useContext(CurrentUserContext)
+  console.log('currentUserState', currentUserState)
 
-  
-  const hundleSubmit = e => {
-    e.preventDefault();
+  const handleSubmit = event => {
+    event.preventDefault()
 
-    const user = isLogin ? { email, password } : { email, password, username };
-   
+    const user = isLogin ? {email, password} : {email, password, username}
+
     doFetch({
-      method: "post",
-      data: {
+      method: 'post',
+       data: {
         user
       }
-    });
-  };
-  useEffect(() => {
-    
-    if (!response) {
-      return;
-    }
-    setToken(response.user.token);
-    setIsSuccessSubmit(true);
-    setCurrentUserState(state => {
-      return {
-        ...state,
-        isLoading: true,
-        isLoggedIn: false,
-        currentUser: response.user
-      };
-    });
-  }, [response,setToken,setCurrentUserState]);
-  if (isSuccessfulSubmit) {
-    return <Redirect to="/" />;
+    })
+      console.log('values', email, password)
   }
+
+  useEffect(() => {
+    if (!response) {
+      return
+    }
+    console.log('response', response)
+    setToken(response.user.token)
+    setIsSuccessfullSubmit(true)
+    setCurrentUserState(state => ({
+      ...state,
+      isLoggedIn: true,
+      isLoading: false,
+      currentUser: response.user
+    }))
+  }, [response, setToken, setCurrentUserState])
+
+  if (isSuccessfullSubmit) {
+    return <Redirect to="/" />
+  }
+
   return (
     <div className="auth-page">
       <div className="container page">
@@ -63,25 +63,24 @@ const Authentication = props => {
             <p className="text-xs-center">
               <Link to={descriptionLink}>{descriptionText}</Link>
             </p>
-            <form onSubmit={hundleSubmit}>
-              {error && <BackendErrorMessages backendErrors={error.errors} />}
+            {error && <BackendErrorMessages backendErrors={error.errors} />}
+            <form onSubmit={handleSubmit}>
               <fieldset>
                 {!isLogin && (
                   <fieldset className="form-group">
                     <input
-                      className="form-control form-control-lg"
                       type="text"
+                      className="form-control form-control-lg"
                       placeholder="Username"
                       value={username}
                       onChange={e => setUsername(e.target.value)}
                     />
                   </fieldset>
                 )}
-
                 <fieldset className="form-group">
                   <input
-                    className="form-control form-control-lg"
                     type="email"
+                    className="form-control form-control-lg"
                     placeholder="Email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
@@ -89,17 +88,17 @@ const Authentication = props => {
                 </fieldset>
                 <fieldset className="form-group">
                   <input
-                    className="form-control form-control-lg"
                     type="password"
+                    className="form-control form-control-lg"
                     placeholder="Password"
                     value={password}
                     onChange={e => setPassword(e.target.value)}
                   />
                 </fieldset>
                 <button
-                  className="btn btn-primary btn-lg pull-xs-right"
-                  type="submit"
                   disabled={isLoading}
+                  className="btn btn-lg btn-primary pull-xs-right"
+                  type="submit"
                 >
                   {pageTitle}
                 </button>
@@ -109,10 +108,11 @@ const Authentication = props => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Authentication;
+export default Authentication
+
 // id: 83335
 // email: "lovkiy2012@gmail.com"
 // createdAt: "2020-02-05T18:32:53.776Z"
