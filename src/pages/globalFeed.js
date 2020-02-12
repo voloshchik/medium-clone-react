@@ -1,15 +1,24 @@
+import { stringify } from "query-string";
 import React, { useEffect } from "react";
 import Feed from "../components/feed/feed";
 import useFetch from "../hooks/useFetch";
 import Pagination from "../components/pagination/pagination";
+import { getPagination, limit } from "../utils";
 
-const GlobalFeed = () => {
-  const apiUrl = "/articles?limit=10&offset=0";
+const GlobalFeed = ({ location, match }) => {
+  const [currentPage, offset] = getPagination(location.search);
+  console.log("fff", currentPage, offset);
+  const stringifiedParams = stringify({
+    limit,
+    offset
+  });
+  const apiUrl = `/articles?${stringifiedParams}`;
   const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
   console.log(response);
+  const url = match.url;
   useEffect(() => {
     doFetch();
-  }, [doFetch]);
+  }, [doFetch, currentPage]);
   return (
     <div className="home-page">
       <div className="banner">
@@ -26,7 +35,12 @@ const GlobalFeed = () => {
             {!isLoading && response && (
               <>
                 <Feed articles={response.articles} />
-                <Pagination total={500} limit={10} url='/' currentPage={2} />
+                <Pagination
+                  total={response.articlesCount}
+                  limit={limit}
+                  url={url}
+                  currentPage={currentPage}
+                />
               </>
             )}
           </div>
