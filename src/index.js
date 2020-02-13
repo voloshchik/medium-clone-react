@@ -12,7 +12,7 @@ function App() {
     <CurrentUserProvider>
       <CurrentUserChekcer>
         <Router>
-          <h1>Welcom to hook</h1>
+   
           <TopBar />
           <Routes />
         </Router>
