@@ -1,20 +1,24 @@
+import React, { useEffect} from "react";
 import { stringify } from "query-string";
-import React, { useEffect } from "react";
-import Feed from "../components/feed/feed";
-import useFetch from "../hooks/useFetch";
-import Pagination from "../components/pagination/pagination";
-import { getPagination, limit } from "../utils";
-import PopularTags from "../components/pupularTags/popularTags";
-import Loading from "../components/loading/loading";
-import ErrorMessage from "../components/errorMessage/errorMessage";
-import FeedToggler from "../components/feedToggler/feedToggler";
+import Feed from "../../components/feed/feed";
+import useFetch from "../../hooks/useFetch";
+import Pagination from "../../components/pagination/pagination";
+import { getPagination, limit } from "../../utils";
+import PopularTags from "../../components/pupularTags/popularTags";
+import Loading from "../../components/loading/loading";
+import ErrorMessage from "../../components/errorMessage/errorMessage";
+import FeedToggler from "../../components/feedToggler/feedToggler";
 
-const GlobalFeed = ({ location, match }) => {
+
+const YouFeed = ({ location, match }) => {
+ 
   const [currentPage, offset] = getPagination(location.search);
+  const tagName = match.params.slug;
 
   const stringifiedParams = stringify({
     limit,
-    offset
+    offset,
+    tag: tagName
   });
   const apiUrl = `/articles?${stringifiedParams}`;
   const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
@@ -22,7 +26,7 @@ const GlobalFeed = ({ location, match }) => {
   const url = match.url;
   useEffect(() => {
     doFetch();
-  }, [doFetch, currentPage]);
+  }, [doFetch, currentPage, tagName]);
   return (
     <div className="home-page">
       <div className="banner">
@@ -34,7 +38,7 @@ const GlobalFeed = ({ location, match }) => {
       <div className="container page">
         <div className="row">
           <div className="col-md-9">
-            <FeedToggler />
+            <FeedToggler tagName={tagName} />
             {isLoading && <Loading />}
             {error && <ErrorMessage />}
             {!isLoading && response && (
@@ -58,4 +62,4 @@ const GlobalFeed = ({ location, match }) => {
   );
 };
 
-export default GlobalFeed;
+export default YouFeed;

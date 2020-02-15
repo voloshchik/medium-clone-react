@@ -12,7 +12,7 @@ import FeedToggler from "../../components/feedToggler/feedToggler";
 const TagFeed = ({ location, match }) => {
   const [currentPage, offset] = getPagination(location.search);
   const tagName = match.params.slug;
-  console.log("fff", currentPage, offset);
+  
   const stringifiedParams = stringify({
     limit,
     offset,
@@ -20,7 +20,7 @@ const TagFeed = ({ location, match }) => {
   });
   const apiUrl = `/articles?${stringifiedParams}`;
   const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
-  console.log(response);
+
   const url = match.url;
   useEffect(() => {
     doFetch();
