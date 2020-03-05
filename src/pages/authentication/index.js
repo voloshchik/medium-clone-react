@@ -5,53 +5,55 @@ import useFetch from "../../hooks/useFetch";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { CurrentUserContext } from "../../contexts/currentUser";
 import BackendErrorMessages from "../../components/backendErrorMessage/backendErrorMessage";
+import { SET_AUTHORIZED } from "../../store/types";
 
 const Authentication = props => {
-  const isLogin = props.match.path === '/login'
-  const pageTitle = isLogin ? 'Sign In' : 'Sign Up'
-  const descriptionLink = isLogin ? '/register' : '/login'
-  const descriptionText = isLogin ? 'Need an account?' : 'Have an account?'
-  const apiUrl = isLogin ? '/users/login' : '/users'
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [username, setUsername] = useState('')
-  const [isSuccessfullSubmit, setIsSuccessfullSubmit] = useState(false)
-  const [{isLoading, response, error}, doFetch] = useFetch(apiUrl)
-  const [, setToken] = useLocalStorage('token')
-  const [currentUserState, setCurrentUserState] = useContext(CurrentUserContext)
-  console.log('currentUserState', currentUserState)
+  const isLogin = props.match.path === "/login";
+  const pageTitle = isLogin ? "Sign In" : "Sign Up";
+  const descriptionLink = isLogin ? "/register" : "/login";
+  const descriptionText = isLogin ? "Need an account?" : "Have an account?";
+  const apiUrl = isLogin ? "/users/login" : "/users";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [isSuccessfullSubmit, setIsSuccessfullSubmit] = useState(false);
+  const [{ isLoading, response, error }, doFetch] = useFetch(apiUrl);
+  const [, setToken] = useLocalStorage("token");
+  const [, dispatch] = useContext(CurrentUserContext);
+  
 
   const handleSubmit = event => {
-    event.preventDefault()
+    event.preventDefault();
 
-    const user = isLogin ? {email, password} : {email, password, username}
+    const user = isLogin ? { email, password } : { email, password, username };
 
     doFetch({
-      method: 'post',
-       data: {
+      method: "post",
+      data: {
         user
       }
-    })
-      console.log('values', email, password)
-  }
+    });
+   
+  };
 
   useEffect(() => {
     if (!response) {
-      return
+      return;
     }
-    console.log('response', response)
-    setToken(response.user.token)
-    setIsSuccessfullSubmit(true)
-    setCurrentUserState(state => ({
-      ...state,
-      isLoggedIn: true,
-      isLoading: false,
-      currentUser: response.user
-    }))
-  }, [response, setToken, setCurrentUserState])
+    
+    setToken(response.user.token);
+    setIsSuccessfullSubmit(true);
+    dispatch({ type: SET_AUTHORIZED, payload: response.user });
+    // setCurrentUserState(state => ({
+    //   ...state,
+    //   isLoggedIn: true,
+    //   isLoading: false,
+    //   currentUser: response.user
+    // }))
+  }, [response, setToken, dispatch]);
 
   if (isSuccessfullSubmit) {
-    return <Redirect to="/" />
+    return <Redirect to="/" />;
   }
 
   return (
@@ -108,10 +110,10 @@ const Authentication = props => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Authentication
+export default Authentication;
 
 // id: 83335
 // email: "lovkiy2012@gmail.com"
