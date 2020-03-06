@@ -1,21 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import BackendErrorMessages from "../backendErrorMessage/backendErrorMessage";
 
-const ArticleForm = ({ onSubmit, error, initialValues }) => {
+const ArticleForm = ({ onSubmit, errors, initialValues }) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [description, setDescription] = useState("");
-  const [taglist, setTegList] = useState("");
+  const [taglist, setTagList] = useState("");
 
   const handleSubmit = event => {
     event.preventDefault();
-    onSubmit({ foo: "foo" });
-    console.log('fields', title,body,description,taglist)
+    const article = {
+      title,
+      body,
+      description,
+      taglist
+    };
+    onSubmit(article);
+    console.log("fields", title, body, description, taglist);
   };
+
+  useEffect(() => {
+    if (!initialValues) {
+      return;
+    }
+    console.log("initialValues", initialValues);
+    setTitle(initialValues.title);
+    setBody(initialValues.body);
+    setDescription(initialValues.description);
+    setTagList(initialValues.tagList.join(" "));
+  }, [initialValues]);
   return (
     <div className="editor-page">
       <div className="container page">
         <div className="row">
           <div className="col-md-10 offset-md-1 col-xs-12">
+            {errors && <BackendErrorMessages backendErrors={errors} />}
             BackendErrorMessages
             <form onSubmit={handleSubmit}>
               <fieldset>
@@ -52,7 +71,7 @@ const ArticleForm = ({ onSubmit, error, initialValues }) => {
                     className="form-control form-comtrol-lg"
                     placeholder="Enter tags"
                     value={taglist}
-                    onChange={e => setTegList(e.target.value)}
+                    onChange={e => setTagList(e.target.value)}
                   />
                 </fieldset>
                 <fieldset className="form-group">
