@@ -1,8 +1,12 @@
-import { LOADING, SET_AUTHORIZED, SET_UNAUTHORIZED } from "./types";
+import { LOADING, SET_AUTHORIZED, SET_UNAUTHORIZED, LOGOUT } from "./types";
 
+const initialState = {
+  isLoading: false,
+  isLoggedIn: null,
+  currentUser: null
+};
 
-
-export const reducer = (state , action) => {
+export const reducer = (state, action) => {
   switch (action.type) {
     case LOADING:
       return { ...state, isLoading: true };
@@ -16,6 +20,11 @@ export const reducer = (state , action) => {
     case SET_UNAUTHORIZED:
       return {
         ...state,
+        isLoggedIn: false
+      };
+    case LOGOUT:
+      return {
+        ...initialState,
         isLoggedIn: false
       };
     default:
