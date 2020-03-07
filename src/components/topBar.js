@@ -7,7 +7,7 @@ const TopBar = () => {
   const userImage =
     (currentUserState.isLoggedIn && currentUserState.currentUser.image) ||
     "https://static.productionready.io/images/smiley-cyrus.jpg";
-  console.log("currentUserStateBar", currentUserState);
+ 
   return (
     <nav className="navbar navbar-light">
       <div className="container">

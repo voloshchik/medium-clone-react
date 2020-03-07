@@ -18,9 +18,9 @@ const PaginationItem = ({ page, url, currentPage }) => {
 };
 const Pagination = ({ total, limit, url, currentPage }) => {
   const countPage = Math.ceil(total / limit);
-  console.log("countPage", countPage);
+  
   const pages = range(1, countPage);
-  console.log("pages", pages);
+  
   return (
     <ul className="pagination">
       {pages.map(page => (

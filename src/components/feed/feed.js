@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import TagList from "../tagList/tagList";
+import AddToFavorites from '../AddtoFavorites/AddtoFavorites';
 
 const Feed = ({ articles }) => {
+console.log('articles', articles)
   return (
     <div>
       {articles.map((article, index) => (
@@ -19,6 +21,13 @@ const Feed = ({ articles }) => {
                 {article.author.username}
               </Link>
               <span className="date">{article.createAt}</span>
+            </div>
+            <div className='pull-xs-right'>
+            <AddToFavorites
+                isFavorited={article.favorited}
+                favoritesCount={article.favoritesCount}
+                articleSlug={article.slug}
+              />
             </div>
           </div>
           <Link to={`/articles/${article.slug}`} className="preview-link">
