@@ -34,7 +34,7 @@ const Article = props => {
   };
 
   const deleteArticle = () => {
-    console.log("deleteArticle");
+  
     doDeleteArticle({
       method: "delete"
     });
