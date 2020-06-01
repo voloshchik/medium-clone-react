@@ -1,30 +1,31 @@
-import { stringify } from "query-string";
-import React, { useEffect } from "react";
-import Feed from "../../components/feed/feed";
-import useFetch from "../../hooks/useFetch";
-import Pagination from "../../components/pagination/pagination";
-import { getPagination, limit } from "../../utils";
-import PopularTags from "../../components/pupularTags/popularTags";
-import Loading from "../../components/loading/loading";
-import ErrorMessage from "../../components/errorMessage/errorMessage";
-import FeedToggler from "../../components/feedToggler/feedToggler";
+import {stringify} from 'query-string'
+import React, {useEffect} from 'react'
+import Feed from '../../components/feed/feed'
+import useFetch from '../../hooks/useFetch'
+import Pagination from '../../components/pagination/pagination'
+import {getPagination, limit} from '../../utils'
+import PopularTags from '../../components/pupularTags/popularTags'
+import Loading from '../../components/loading/loading'
+import ErrorMessage from '../../components/errorMessage/errorMessage'
+import FeedToggler from '../../components/feedToggler/feedToggler'
 
-const TagFeed = ({ location, match }) => {
-  const [currentPage, offset] = getPagination(location.search);
-  const tagName = match.params.slug;
-  
+const TagFeed = ({location, match}) => {
+  // console.log('locationTagFeed', location)
+  const [currentPage, offset] = getPagination(location.search)
+  const tagName = match.params.slug
+  // console.log('TagFeedcurrentPage', currentPage, offset)
   const stringifiedParams = stringify({
     limit,
     offset,
-    tag: tagName
-  });
-  const apiUrl = `/articles?${stringifiedParams}`;
-  const [{ response, isLoading, error }, doFetch] = useFetch(apiUrl);
+    tag: tagName,
+  })
+  const apiUrl = `/articles?${stringifiedParams}`
+  const [{response, isLoading, error}, doFetch] = useFetch(apiUrl)
 
-  const url = match.url;
+  const url = match.url
   useEffect(() => {
-    doFetch();
-  }, [doFetch, currentPage, tagName]);
+    doFetch()
+  }, [doFetch, currentPage, tagName])
   return (
     <div className="home-page">
       <div className="banner">
@@ -57,7 +58,7 @@ const TagFeed = ({ location, match }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TagFeed;
+export default TagFeed

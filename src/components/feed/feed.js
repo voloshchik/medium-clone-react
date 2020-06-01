@@ -1,10 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import TagList from "../tagList/tagList";
-import AddToFavorites from '../AddtoFavorites/AddtoFavorites';
+import React from 'react'
+import {Link} from 'react-router-dom'
+import TagList from '../tagList/tagList'
+import AddToFavorites from '../AddtoFavorites/AddtoFavorites'
 
-const Feed = ({ articles }) => {
-console.log('articles', articles)
+const Feed = ({articles}) => {
   return (
     <div>
       {articles.map((article, index) => (
@@ -22,8 +21,8 @@ console.log('articles', articles)
               </Link>
               <span className="date">{article.createAt}</span>
             </div>
-            <div className='pull-xs-right'>
-            <AddToFavorites
+            <div className="pull-xs-right">
+              <AddToFavorites
                 isFavorited={article.favorited}
                 favoritesCount={article.favoritesCount}
                 articleSlug={article.slug}
@@ -34,12 +33,12 @@ console.log('articles', articles)
             <h1>{article.title}</h1>
             <p>{article.description}</p>
             <span>Read more...</span>
-            <TagList tags={article.tagList}/>
+            <TagList tags={article.tagList} />
           </Link>
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Feed;
+export default Feed
